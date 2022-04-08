@@ -1,0 +1,5 @@
+venv
+Out
+__pycache__
+*.7z
+*.bat
