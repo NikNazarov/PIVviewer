@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 plt.ioff()
 import numpy as np
 from PlotterFunctions import Database, save_table, autoscale_y, make_name
-from scipy.interpolate import RectBivariateSpline
+from scipy.interpolate import LinearNDInterpolator
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg, NavigationToolbar2QT as NavigationToolbar
 from matplotlib.figure import Figure
 from PyQt5.QtCore import pyqtSignal, pyqtSlot, Qt
@@ -170,14 +170,22 @@ class PIVcanvas(MplCanvas):
         y0 = self.y_data
         xi = np.linspace(x0.min(), x0.max(), y0.size)
         yi = np.linspace(y0.min(), y0.max(), x0.size)
-        ui = RectBivariateSpline(x0, y0, u.T)(xi, yi)
-        vi = RectBivariateSpline(x0, y0, v.T)(xi, yi)
-        self.streamlines = self.axes.streamplot(xi, yi, ui.T, vi.T, 
+        x0, y0 = np.meshgrid(x0, y0)
+        xi, yi = np.meshgrid(xi, yi)
+        xflat = x0.reshape(-1)
+        yflat = y0.reshape(-1)
+        interp_ui = LinearNDInterpolator(list(zip(xflat, yflat)), u.reshape(-1))
+        interp_vi = LinearNDInterpolator(list(zip(xflat, yflat)), v.reshape(-1))
+        ui = interp_ui(xi, yi)
+        vi = interp_vi(xi, yi)
+        self.streamlines = self.axes.streamplot(xi, yi, ui, vi, 
             density=4, linewidth=.8, arrowsize=.8, color="black"
             )
         self.update_canvas()
 
     def hide_streamlines(self):
+        if self.coords is None:
+            return
         if self.streamlines is None:
             self.draw_stremlines()
         self.visible_lines = not self.visible_lines
