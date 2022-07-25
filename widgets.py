@@ -72,7 +72,7 @@ class PIVcanvas(MplCanvas):
         self.visible_lines = False
         self.visible_line = True
         self.img_data = None
-        self.axes.axis("off")
+        # self.axes.axis("off")
 
     def change_orientation(self, key):
         self.orientation = not self.orientation
