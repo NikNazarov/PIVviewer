@@ -2,8 +2,8 @@
 Simple GUI tool for visualistion of PIV data represented in text.
 
 __Program description__:
-Program could be used to observe PIV vector fields and to create and save vertical or horizontal field profiles.
-PIV data must be represented as text table with first two columns corresponding to X, Y coordinates. For example:
+Program for investigation of PIV vector fields data. With help of this tool one can create and save vertical or horizontal field profiles.
+PIV data must be represented as text table with first two columns corresponding to X, Y 2d coordinates. For example:
 | x[mm] | y[mm] | Vx[m/s]   | Vy[m/s]   |
 |-------|-------|-----------|-----------|
 | 0.3   | 0.5   | -0.084708 | -0.036295 |
